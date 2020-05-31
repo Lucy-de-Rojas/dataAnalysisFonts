@@ -1,0 +1,229 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+# print('\n\n')
+
+# plt.style.use('ggplot')
+# plt.style.use('seaborn-poster')
+# plt.style.use('seaborn-talk')
+plt.style.use('fivethirtyeight')
+
+
+fonts = open('daFontResult-FontNames.csv', 'r')
+for i in fonts:
+    fonts = i.split(',')
+
+cathegories = open('daFontResult-Group.csv','r')
+for i in cathegories:
+    cathegories = i.split(',')
+
+
+totals = open('daFontResult-TotalDownloads.csv','r')
+for i in totals:
+    totals = [int(x) for x in i.split(',')]
+
+
+studios = open('daFontResult-Studios.csv','r')
+for i in studios:
+    studios = i.split(',')
+
+
+
+
+#creating dataframe:
+columns = ['font', 'cathegory', 'total', 'studio']
+lists = [fonts, cathegories, totals, studios]
+together = dict(list(zip(columns, lists)))
+df = pd.DataFrame(together)
+
+
+#print('unique cathegories: ', df['cathegory'].unique())
+
+
+#top5s:
+scriptTOP5 = df[df['cathegory']=='Script'].sort_values(by=['total'], ascending=False).head(5)
+fancyTOP5 = df[df['cathegory']=='Fancy'].sort_values(by=['total'], ascending=False).head(5)
+basicTOP5 = df[df['cathegory']=='Basic'].sort_values(by=['total'], ascending=False).head(5)
+technoTOP5 = df[df['cathegory']=='Techno'].sort_values(by=['total'], ascending=False).head(5)
+bitmapTOP5 = df[df['cathegory']=='Bitmap'].sort_values(by=['total'], ascending=False).head(5)
+gothicTOP5 = df[df['cathegory']=='Gothic'].sort_values(by=['total'], ascending=False).head(5)
+foreignLookTOP5 = df[df['cathegory']=='Foreign look'].sort_values(by=['total'], ascending=False).head(5)
+dingbatsTOP5 = df[df['cathegory']=='Dingbats'].sort_values(by=['total'], ascending=False).head(5)
+holidayTOP5 = df[df['cathegory']=='Holiday'].sort_values(by=['total'], ascending=False).head(5)
+
+
+
+#mean()  category ranking:
+means = [scriptTOP5['total'].mean(),fancyTOP5['total'].mean(), basicTOP5['total'].mean(),
+         technoTOP5['total'].mean(), bitmapTOP5['total'].mean(), gothicTOP5['total'].mean(),
+         foreignLookTOP5['total'].mean(), dingbatsTOP5['total'].mean(), holidayTOP5['total'].mean()]
+categories_ranking = (pd.DataFrame(list(zip(df['cathegory'].unique(), means)), columns = ['category','means'])).sort_values(by='means')['category'].tolist()
+#print(categories_ranking)
+
+
+
+
+
+fig, ax = plt.subplots()
+
+ones = [int(x) for x in 5*'1']
+twos = [int(x) for x in 5*'2']
+threes = [int(x) for x in 5*'3']
+fours = [int(x) for x in 5*'4']
+fives = [int(x) for x in 5*'5']
+sixes = [int(x) for x in 5*'6']
+sevens = [int(x) for x in 5*'7']
+eights = [int(x) for x in 5*'8']
+nines = [int(x) for x in 5*'9']
+
+
+
+
+# #bitmap:
+ax.plot(ones, bitmapTOP5['total'], linestyle = 'None', marker = 'o', color = 'red', alpha = 0.5)
+zipityBitmap = zip(bitmapTOP5['total'], bitmapTOP5['font'])
+for i in zipityBitmap:
+    ax.annotate(i[1], xy=[1,i[0]],xytext=(1.3,i[0]), arrowprops = {"arrowstyle":"->", "color":'red'})
+
+
+
+
+# #holiday:
+ax.plot(twos, holidayTOP5['total'], linestyle = 'None', marker = 'o', color = 'orange', alpha = 0.5)
+zipityHoliday = zip(holidayTOP5['total'], holidayTOP5['font'])
+for i in zipityHoliday:
+    ax.annotate(i[1], xy=[2,i[0]],xytext=(2.3,i[0]), arrowprops = {"arrowstyle":"->", "color":'orange'})
+    #ax.text(2.1, i[0]-10000, i[1], color = 'red')
+
+
+# #dingbats:
+ax.plot(threes, dingbatsTOP5['total'], linestyle = 'None', marker = 'o', color = 'yellow', alpha = 0.5)
+zipityDingbats = zip(dingbatsTOP5['total'], dingbatsTOP5['font'])
+for i in zipityDingbats:
+    ax.annotate(i[1], xy=[3, i[0]], xytext=(3.3, i[0]), arrowprops={"arrowstyle": "->", "color": 'yellow'})
+    #ax.text(3, i[0]-1000, i[1],color = 'blue')
+
+
+
+
+# #foreighLook:
+ax.plot(fours, foreignLookTOP5['total'], linestyle = 'None', marker = 'o', color = 'green', alpha = 0.5)
+zipityForeignLook = zip(foreignLookTOP5['total'], foreignLookTOP5['font'])
+for i in zipityForeignLook:
+    ax.annotate(i[1], xy=[4, i[0]], xytext=(4.3, i[0]), arrowprops={"arrowstyle": "->", "color": 'green'})
+
+    #ax.text(4, i[0]-1000, i[1],color='red')
+
+
+
+
+
+# #gothic:
+ax.plot(fives, gothicTOP5['total'], linestyle = 'None', marker = 'o', color = 'blue', alpha = 0.5)
+zipityGothic = zip(gothicTOP5['total'], gothicTOP5['font'])
+for i in zipityGothic:
+    ax.annotate(i[1], xy=[5, i[0]], xytext=(5.3, i[0]), arrowprops={"arrowstyle": "->", "color": 'blue'})
+    #ax.text(5, i[0]-1000, i[1],color='green')
+
+
+
+
+
+# #basic:
+ax.plot(sixes, basicTOP5['total'],linestyle = 'None', marker = 'o', color = 'purple', alpha = 0.5)
+zipityBasic = zip(basicTOP5['total'], basicTOP5['font'])
+
+ax.annotate(basicTOP5['font'].tolist()[0], xy=[6, basicTOP5['total'].tolist()[0]], xytext = (6.3, basicTOP5['total'].tolist()[0]+60000), arrowprops = {'arrowstyle': '->', 'color':'purple'})
+ax.annotate(basicTOP5['font'].tolist()[1], xy=[6, basicTOP5['total'].tolist()[1]], xytext = (6.3, basicTOP5['total'].tolist()[1]+30000), arrowprops = {'arrowstyle': '->', 'color':'purple'})
+ax.annotate(basicTOP5['font'].tolist()[2], xy=[6, basicTOP5['total'].tolist()[2]], xytext = (6.3, basicTOP5['total'].tolist()[2]), arrowprops = {'arrowstyle': '->', 'color':'purple'})
+ax.annotate(basicTOP5['font'].tolist()[3], xy=[6, basicTOP5['total'].tolist()[3]], xytext = (6.3, basicTOP5['total'].tolist()[3]-30000), arrowprops = {'arrowstyle': '->', 'color':'purple'})
+ax.annotate(basicTOP5['font'].tolist()[4], xy=[6, basicTOP5['total'].tolist()[4]], xytext = (6.3, basicTOP5['total'].tolist()[4]-60000), arrowprops = {'arrowstyle': '->', 'color':'purple'})
+# for i in zipityBasic:
+#     ax.annotate(i[1], xy=[6, i[0]], xytext=(6.3, i[0]), arrowprops={"arrowstyle": "->", "color": 'purple'})
+    #ax.text(6,i[0]-1000,i[1])
+
+
+
+
+
+
+# # #techno:
+ax.plot(sevens, technoTOP5['total'], linestyle = 'None', marker = 'o', color = 'cyan', alpha = 0.5)
+zipityTechno = zip(technoTOP5['total'],technoTOP5['font'])
+# for i in zipityTechno:
+#     ax.text(7, i[0]-1000, i[1])
+ax.annotate(technoTOP5['font'].tolist()[0], xy=[7, technoTOP5['total'].tolist()[0]], xytext = (7.3, technoTOP5['total'].tolist()[0]+60000), arrowprops = {'arrowstyle': '->', 'color':'cyan'})
+ax.annotate(technoTOP5['font'].tolist()[1], xy=[7, technoTOP5['total'].tolist()[1]], xytext = (7.3, technoTOP5['total'].tolist()[1]+30000), arrowprops = {'arrowstyle': '->', 'color':'cyan'})
+ax.annotate(technoTOP5['font'].tolist()[2], xy=[7, technoTOP5['total'].tolist()[2]], xytext = (7.3, technoTOP5['total'].tolist()[2]), arrowprops = {'arrowstyle': '->', 'color':'cyan'})
+ax.annotate(technoTOP5['font'].tolist()[3], xy=[7, technoTOP5['total'].tolist()[3]], xytext = (7.3, technoTOP5['total'].tolist()[3]-30000), arrowprops = {'arrowstyle': '->', 'color':'cyan'})
+ax.annotate(technoTOP5['font'].tolist()[4], xy=[7, technoTOP5['total'].tolist()[4]], xytext = (7.3, technoTOP5['total'].tolist()[4]-60000), arrowprops = {'arrowstyle': '->', 'color':'cyan'})
+
+
+
+
+
+#
+# #script: red
+ax.plot(eights,scriptTOP5['total'], linestyle = 'None', marker = 'o', color = 'red', alpha = 0.5)
+ax.annotate(scriptTOP5['font'].tolist()[0], xy=[8, scriptTOP5['total'].tolist()[0]], xytext = (8.3, scriptTOP5['total'].tolist()[0]+60000), arrowprops = {'arrowstyle': '->', 'color':'red'})
+ax.annotate(scriptTOP5['font'].tolist()[1], xy=[8, scriptTOP5['total'].tolist()[1]], xytext = (8.3, scriptTOP5['total'].tolist()[1]+30000), arrowprops = {'arrowstyle': '->', 'color':'red'})
+ax.annotate(scriptTOP5['font'].tolist()[2], xy=[8, scriptTOP5['total'].tolist()[2]], xytext = (8.3, scriptTOP5['total'].tolist()[2]), arrowprops = {'arrowstyle': '->', 'color':'red'})
+ax.annotate(scriptTOP5['font'].tolist()[3], xy=[8, scriptTOP5['total'].tolist()[3]], xytext = (8.3, scriptTOP5['total'].tolist()[3]-30000), arrowprops = {'arrowstyle': '->', 'color':'red'})
+ax.annotate(scriptTOP5['font'].tolist()[4], xy=[8, scriptTOP5['total'].tolist()[4]], xytext = (8.3, scriptTOP5['total'].tolist()[4]-60000), arrowprops = {'arrowstyle': '->', 'color':'red'})
+
+
+
+# zipityScript = zip(scriptTOP5['total'], scriptTOP5['font'])
+# for i in zipityScript:
+#     ax.text(8.1,i[0], i[1])
+
+
+
+
+
+#
+# # #fancy:
+ax.plot(nines, fancyTOP5['total'], linestyle = 'None', marker = 'o', color = 'orange', alpha = 0.5)
+ax.annotate(fancyTOP5['font'].tolist()[0], xy=[9, fancyTOP5['total'].tolist()[0]], xytext = (9.3, fancyTOP5['total'].tolist()[0]+60000), arrowprops = {'arrowstyle': '->', 'color':'orange'})
+ax.annotate(fancyTOP5['font'].tolist()[1], xy=[9, fancyTOP5['total'].tolist()[1]], xytext = (9.3, fancyTOP5['total'].tolist()[1]+30000), arrowprops = {'arrowstyle': '->', 'color':'orange'})
+ax.annotate(fancyTOP5['font'].tolist()[2], xy=[9, fancyTOP5['total'].tolist()[2]], xytext = (9.3, fancyTOP5['total'].tolist()[2]), arrowprops = {'arrowstyle': '->', 'color':'orange'})
+ax.annotate(fancyTOP5['font'].tolist()[3], xy=[9, fancyTOP5['total'].tolist()[3]], xytext = (9.3, fancyTOP5['total'].tolist()[3]-30000), arrowprops = {'arrowstyle': '->', 'color':'orange'})
+ax.annotate(fancyTOP5['font'].tolist()[4], xy=[9, fancyTOP5['total'].tolist()[4]], xytext = (9.3, fancyTOP5['total'].tolist()[4]-60000), arrowprops = {'arrowstyle': '->', 'color':'orange'})
+
+
+# zipityFancy = zip(fancyTOP5['total'], fancyTOP5['font'])
+# for i in zipityFancy:
+#     ax.text(9,i[0]-1000, i[1])
+
+
+
+
+ax.set_title('Popular fonts', fontname = 'cubic')
+
+
+
+plt.yticks([400000,500000,600000,700000,800000,900000,1000000,1100000],['0.4M','0.5M','0.6M','0.7M','0.8M','0.9M','1M','1.1M'])
+plt.xticks([1,2,3,4,5,6,7,8,9],['bitmap >','holiday >','Dingbats >','Foreign Look >','Gothic >','Basic >','Techno >' ,'Script >', 'Fancy >'], rotation=90)
+
+
+ax.set_ylabel('Total downloads [ever]',color='red')
+ax.set_xlabel('Font categories', color='blue')
+
+
+plt.tick_params(labeltop=True, labelright=True)
+
+
+#size of the graph:
+fig.set_size_inches([45,30])
+
+
+#scale of x axes:
+plt.xlim(0.5,10.5)
+
+
+plt.savefig('fonts.svg')
+# plt.show()
+
+print('\n\n\ni seem to work well')
