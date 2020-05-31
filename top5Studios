@@ -1,0 +1,95 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+# print('\n\n')
+
+plt.style.use('ggplot')
+#plt.style.use('seaborn-poster')
+#plt.style.use('seaborn-talk')
+#plt.style.use('fivethirtyeight')
+
+
+fonts = open('daFontResult-FontNames.csv', 'r')
+for i in fonts:
+    fonts = i.split(',')
+
+cathegories = open('daFontResult-Group.csv','r')
+for i in cathegories:
+    cathegories = i.split(',')
+
+
+totals = open('daFontResult-TotalDownloads.csv','r')
+for i in totals:
+    totals = [int(x) for x in i.split(',')]
+
+
+studios = open('daFontResult-Studios.csv','r')
+for i in studios:
+    studios = i.split(',')
+
+
+
+
+#creating dataframe:
+columns = ['font', 'cathegory', 'total', 'studio']
+lists = [fonts, cathegories, totals, studios]
+together = dict(list(zip(columns, lists)))
+df = pd.DataFrame(together)
+df = df[df['studio'] != 'no studio mentioned']
+
+grouped = df.groupby(['studio']).sum().sort_values(by='total', ascending=False).head(5)
+#we have our top 5 studios!!!  really happy
+
+font_counts = [359,533,302,256,474]
+font_x = [1,2,3,4,5]
+grouped['font_count'] = font_counts
+
+grouped = grouped.sort_values(by='total')
+grouped['font_x'] = font_x
+fig, ax = plt.subplots()
+for i in range(0,5):
+    ax.annotate(grouped.index.tolist()[i], xy= [font_x[i],grouped['total'].tolist()[i]], xytext = (font_x[i]-0.06,300000), rotation = 90)
+
+
+
+plt.bar(grouped['font_x'], grouped['total'], width=grouped['font_count']/900,color = 'grey')
+#plt.scatter(grouped['font_x'], grouped['total'])
+
+
+
+
+
+print(grouped)
+
+
+
+
+
+ax.set_title('Top 5 Downloaded Studios')
+
+
+plt.xticks(font_x, grouped['font_count'].tolist())
+plt.yticks([2000000,4000000,6000000,8000000,10000000],['2M','4M','6M','8M','10M'])
+
+
+ax.set_ylabel('Total downloads',color='grey')
+ax.set_xlabel('Studios', color='grey')
+
+
+plt.tick_params(labelright=True)
+
+
+#size of the graph:
+#fig.set_size_inches([45,30])
+
+
+#scale of x axes:
+#plt.xlim(0.5,10.5)
+
+
+plt.savefig('fonts-top5_Studios.svg')
+#plt.show()
+
+print('\n\n\ni seem to work well')
