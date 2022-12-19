@@ -1,6 +1,6 @@
 <div align="center">
 <h1>Data Science Project</h1>
-<Aprill>Website scraping and data visualisation
+<h2>Website scraping and data visualisation
 <br />
 Aprill 2020</h2>
 <p>
