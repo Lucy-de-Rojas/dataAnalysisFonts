@@ -1,7 +1,8 @@
 <div align="center">
 <h1>Data Science Project</h1>
-<h2>Website scraping and data visualisation</h2>
-<h2>Aprill 2020</h2>
+<Aprill>Website scraping and data visualisation
+<br />
+Aprill 2020</h2>
 <p>
 Scraped data from Da Font site to see what fonts per category are the most popular and which studios are the most successful.
 </p>
