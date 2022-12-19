@@ -12,7 +12,7 @@ Scraped data from Da Font site to see what fonts per category are the most popul
 <br /><br />
 
 <h2>Data scraping and visualisation outcome:</h2>
-<img src="./fontsLowRes.jpg" width="75%"/>
+<img src="./fontsLowRes.jpg" width="100%"/>
 <br /><br /><br />
 <p>Achived with help: </p>
 
